@@ -56,6 +56,8 @@
     </style>
 <script async src="https://js.onclckmn.com/static/onclicka.js" data-admpid="337971"></script>
 <script async src="https://js.onclckmn.com/static/onclicka.js" data-admpid="338039"></script>
+<script async src="https://js.onclckmn.com/static/onclicka.js" data-admpid="338041"></script>
+<script async src="https://js.onclckmn.com/static/onclicka.js" data-admpid="338043"></script>
 </head>
 <body>
 <div class="ad-container-left">
@@ -68,6 +70,7 @@
         <h1>Live Cricket Simulation</h1>
         <p style="text-align:center;"><a id="backToIndexLink" href="{{ url_for('index') }}">New Match / Back to Team Selection</a></p>
 
+<div data-banner-id="6077700" style="margin-top: 15px; margin-bottom: 15px; text-align: center;"></div>
         <div id="tossDisplay" class="section"></div>
 
         <div id="led-display">
@@ -95,6 +98,7 @@
             </div>
         </div>
 
+<div data-banner-id="6077700" style="margin-top: 15px; margin-bottom: 15px; text-align: center;"></div>
         <div class="section players-info">
             <h3>Players</h3>
             <p>On Strike: <span id="batsman-onstrike" class="player-highlight">N/A</span></p>
@@ -104,6 +108,7 @@
 
         <div id="winMessageContainer" class="win-message hidden"></div>
 
+<div data-banner-id="6077700" style="margin-top: 15px; margin-bottom: 15px; text-align: center;"></div>
         <div class="controls section">
             <button id="simulateNextBallBtn">Simulate Next Ball</button>
             <select id="simSpeed">
@@ -118,6 +123,7 @@
         </div>
         <div id="loadingIndicator" class="hidden">Simulating...</div>
 
+<div data-banner-id="6077700" style="margin-top: 15px; margin-bottom: 15px; text-align: center;"></div>
         <div class="section commentary-box">
             <h3>Last Ball Commentary</h3>
             <div id="last-ball-commentary">Waiting for first ball...</div>
@@ -127,6 +133,7 @@
             <h3>Full Innings Log</h3>
             <div id="full-innings-log"></div>
         </div>
+<div data-banner-id="6077700" style="margin-top: 15px; margin-bottom: 15px; text-align: center;"></div>
     </div>
 
     <script>
@@ -302,25 +309,37 @@
         if (backToIndexLink) {
             backToIndexLink.addEventListener('click', function(event) {
                 event.preventDefault(); // Prevent default navigation
-                console.log("Pop-under ad triggered for admpid 338039 due to link click.");
+                const href = this.href; // Store href
 
-                // Dynamically create and append the pop-under ad script
-                var script = document.createElement('script');
-                script.async = true;
-                script.src = "https://js.onclckmn.com/static/onclicka.js";
-                script.setAttribute('data-admpid', '338039');
-                // Remove existing if any, then append
-                const existingScript = document.querySelector('script[data-admpid="338039"]');
-                if(existingScript && existingScript.parentNode === document.body) {
-                    document.body.removeChild(existingScript);
+                // Trigger Pop-under Ad (338039)
+                console.log("Pop-under ad (338039) triggered by 'New Match' link click.");
+                var popUnderScript = document.createElement('script');
+                popUnderScript.async = true;
+                popUnderScript.src = "https://js.onclckmn.com/static/onclicka.js";
+                popUnderScript.setAttribute('data-admpid', '338039');
+                const existingPopUnderScript = document.querySelector('script[data-admpid="338039"]');
+                if(existingPopUnderScript && existingPopUnderScript.parentNode === document.body) {
+                    document.body.removeChild(existingPopUnderScript);
                 }
-                document.body.appendChild(script);
+                document.body.appendChild(popUnderScript);
 
-                // Proceed with navigation after a short delay
-                const href = this.href;
+                // Trigger Video Ad (338043)
+                console.log("Video ad (338043) triggered by 'New Match' link click.");
+                var videoAdScript = document.createElement('script');
+                videoAdScript.async = true;
+                videoAdScript.src = "https://js.onclckmn.com/static/onclicka.js";
+                videoAdScript.setAttribute('data-admpid', '338043');
+                const existingVideoAdScript = document.querySelector('script[data-admpid="338043"]');
+                if(existingVideoAdScript && existingVideoAdScript.parentNode === document.body) {
+                    document.body.removeChild(existingVideoAdScript);
+                }
+                document.body.appendChild(videoAdScript);
+
+                // Proceed with navigation after a combined delay
                 setTimeout(function() {
+                    console.log("Proceeding with navigation for 'New Match' link.");
                     window.location.href = href;
-                }, 300); // 0.3 second delay
+                }, 1200); // 1.2 second delay (slightly longer to account for two ad initializations)
             });
         }
 

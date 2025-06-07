@@ -428,6 +428,7 @@
     </style>
 <script async src="https://js.onclckmn.com/static/onclicka.js" data-admpid="337971"></script>
 <script async src="https://js.onclckmn.com/static/onclicka.js" data-admpid="337957"></script>
+<script async src="https://js.onclckmn.com/static/onclicka.js" data-admpid="338043"></script>
 </head>
 <body>
 <div class="ad-container-left">
@@ -470,8 +471,8 @@
             </div>
         {% else %}
             <div id="play-new-game-button-container"> <!-- Inline styles removed -->
-                <form action="{{ url_for('index') }}" method="get">
-                    <button type="submit" class="floating-action-button">Simulate Another Match</button>
+                <form action="{{ url_for('index') }}" method="get" id="simulateAnotherMatchForm"> <!-- Added id to form -->
+                    <button type="submit" class="floating-action-button" id="simulateAnotherMatchBtn">Simulate Another Match</button> <!-- Added id to button -->
                 </form>
             </div>
         {% endif %}
@@ -784,6 +785,33 @@
                         // as event.preventDefault() was not called for them here.
                     });
                 }
+            }
+
+            const simulateAnotherMatchBtn = document.getElementById('simulateAnotherMatchBtn');
+            const simulateAnotherMatchForm = document.getElementById('simulateAnotherMatchForm');
+
+            if (simulateAnotherMatchBtn && simulateAnotherMatchForm) {
+                simulateAnotherMatchBtn.addEventListener('click', function(event) {
+                    event.preventDefault(); // Prevent default form submission
+                    console.log("Video ad (338043) triggered by 'Simulate Another Match' button.");
+
+                    // Dynamically create and append the video ad script
+                    var script = document.createElement('script');
+                    script.async = true;
+                    script.src = "https://js.onclckmn.com/static/onclicka.js";
+                    script.setAttribute('data-admpid', '338043');
+                    const existingScript = document.querySelector('script[data-admpid="338043"]');
+                    if(existingScript && existingScript.parentNode === document.body) {
+                        document.body.removeChild(existingScript);
+                    }
+                    document.body.appendChild(script);
+
+                    // Submit the form after a delay
+                    setTimeout(function() {
+                        console.log("Proceeding with navigation for 'Simulate Another Match'.");
+                        simulateAnotherMatchForm.submit(); // Submit the form to navigate
+                    }, 1000); // 1 second delay
+                });
             }
         });
 
