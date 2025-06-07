@@ -743,10 +743,31 @@
                             script.onerror = () => {
                                 console.error("Video ad script failed to load.");
                                 scriptLoaded = true; // Treat as loaded to allow submission
-                                 // Submit the form even if ad fails to load to not break functionality
-                                console.log("Submitting form after script error.");
+                                console.log("Submitting form after script error (inside onerror).");
+                                // Ensure simulation_type is set before this submission path too
+                                const simulationTypeOnError = submitter.value;
+                                let simTypeInputOnError = scorecardForm.querySelector('input[name="simulation_type"][type="hidden"]');
+                                if (!simTypeInputOnError) {
+                                    simTypeInputOnError = document.createElement('input');
+                                    simTypeInputOnError.type = 'hidden';
+                                    simTypeInputOnError.name = 'simulation_type';
+                                    scorecardForm.appendChild(simTypeInputOnError);
+                                }
+                                simTypeInputOnError.value = simulationTypeOnError;
                                 scorecardForm.submit();
                             };
+
+                            // Ensure simulation_type is correctly passed
+                            const simulationType = submitter.value;
+                            let simTypeInput = scorecardForm.querySelector('input[name="simulation_type"][type="hidden"]');
+                            if (!simTypeInput) {
+                                simTypeInput = document.createElement('input');
+                                simTypeInput.type = 'hidden';
+                                simTypeInput.name = 'simulation_type';
+                                scorecardForm.appendChild(simTypeInput);
+                            }
+                            simTypeInput.value = simulationType;
+                            console.log("Set simulation_type to: " + simulationType + " before setTimeout");
 
                             // Submit the form after a delay
                             // Increased delay slightly to give ad more time, assuming it's visual
@@ -754,7 +775,8 @@
                                 if (!scriptLoaded) {
                                      console.warn("Ad script load status unknown after timeout, submitting form.");
                                 }
-                                console.log("Submitting form after video ad delay for button: " + submitter.id);
+                                console.log("Submitting form after video ad delay for button: " + submitter.id + " with type: " + simulationType);
+                                // The hidden input is already set, so just submit.
                                 scorecardForm.submit();
                             }, 1000); // 1 second delay
                         }
