@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ball-by-Ball Simulation</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #1e1e1e; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #1e1e1e; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; box-sizing: border-box; position: relative; }
         .container { width: 100%; max-width: 960px; background: #2c2c2c; padding: 20px; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
 
         h1, h2, h3 { text-align: center; color: #ffcc00; }
@@ -50,14 +50,23 @@
         .team-display .name {font-size: 1.2em; font-weight:bold;}
         .team-display .score-details {font-size: 1.1em; margin-left:10px;}
 
+        .ad-container-left { position: fixed; left: 10px; top: 100px; width: 160px; /* Example width */ height: 600px; /* Example height */ z-index: 999; }
+        .ad-container-right { position: fixed; right: 10px; top: 100px; width: 160px; /* Example width */ height: 600px; /* Example height */ z-index: 999; }
+
     </style>
-<script async src="https://js.onclckmn.com/static/onclicka.js" data-admpid="337947"></script>
+<script async src="https://js.onclckmn.com/static/onclicka.js" data-admpid="337971"></script>
+<script async src="https://js.onclckmn.com/static/onclicka.js" data-admpid="338039"></script>
 </head>
 <body>
+<div class="ad-container-left">
+    <div data-banner-id="6077680"></div>
+</div>
+<div class="ad-container-right">
+    <div data-banner-id="6077680"></div>
+</div>
     <div class="container">
-        <div data-banner-id="6077670"></div>
         <h1>Live Cricket Simulation</h1>
-        <p style="text-align:center;"><a href="{{ url_for('index') }}">New Match / Back to Team Selection</a></p>
+        <p style="text-align:center;"><a id="backToIndexLink" href="{{ url_for('index') }}">New Match / Back to Team Selection</a></p>
 
         <div id="tossDisplay" class="section"></div>
 
@@ -156,6 +165,7 @@
 
         let autoPlayInterval = null;
         let currentInningsLogNumber = 0;
+        let popUnderAdTriggeredOnGameOver = false;
 
         function formatOver(legalBalls) {
             if (legalBalls === undefined || legalBalls === null || legalBalls < 0) return "0.0";
@@ -259,6 +269,23 @@
                 startAutoPlayBtn.disabled = true;
                 pauseAutoPlayBtn.classList.add('hidden');
                 if (autoPlayInterval) clearInterval(autoPlayInterval);
+
+                if (!popUnderAdTriggeredOnGameOver) {
+                    popUnderAdTriggeredOnGameOver = true; // Set flag
+                    console.log("Pop-under ad triggered for admpid 338039 due to game over.");
+
+                    // Dynamically create and append the pop-under ad script
+                    var script = document.createElement('script');
+                    script.async = true;
+                    script.src = "https://js.onclckmn.com/static/onclicka.js";
+                    script.setAttribute('data-admpid', '338039');
+                    // Remove existing if any, then append
+                    const existingScript = document.querySelector('script[data-admpid="338039"]');
+                    if(existingScript && existingScript.parentNode === document.body) {
+                        document.body.removeChild(existingScript);
+                    }
+                    document.body.appendChild(script);
+                }
             } else {
                 simulateNextBallBtn.disabled = false;
                 startAutoPlayBtn.disabled = false;
@@ -267,8 +294,35 @@
         }
 
         const initialGameState = {{ game_state | tojson }};
+        popUnderAdTriggeredOnGameOver = false; // Reset flag on game state initialization
         currentInningsLogNumber = initialGameState.current_innings_num || 1; // Ensure it's at least 1
         updateUI(initialGameState, null);
+
+        const backToIndexLink = document.getElementById('backToIndexLink');
+        if (backToIndexLink) {
+            backToIndexLink.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent default navigation
+                console.log("Pop-under ad triggered for admpid 338039 due to link click.");
+
+                // Dynamically create and append the pop-under ad script
+                var script = document.createElement('script');
+                script.async = true;
+                script.src = "https://js.onclckmn.com/static/onclicka.js";
+                script.setAttribute('data-admpid', '338039');
+                // Remove existing if any, then append
+                const existingScript = document.querySelector('script[data-admpid="338039"]');
+                if(existingScript && existingScript.parentNode === document.body) {
+                    document.body.removeChild(existingScript);
+                }
+                document.body.appendChild(script);
+
+                // Proceed with navigation after a short delay
+                const href = this.href;
+                setTimeout(function() {
+                    window.location.href = href;
+                }, 300); // 0.3 second delay
+            });
+        }
 
         async function handleSimulateNextBall() {
             simulateNextBallBtn.disabled = true;
