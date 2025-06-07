@@ -116,7 +116,10 @@
             padding-top: 20px;
             padding-bottom: 20px;
             color: var(--text-color);
+            position: relative;
         }
+        .ad-container-left { position: fixed; left: 10px; top: 100px; width: 160px; /* Example width, adjust if known */ height: 600px; /* Example height, adjust if known */ z-index: 999; }
+        .ad-container-right { position: fixed; right: 10px; top: 100px; width: 160px; /* Example width, adjust if known */ height: 600px; /* Example height, adjust if known */ z-index: 999; }
         .container {
             max-width: 800px;
             margin: auto;
@@ -423,12 +426,18 @@
             background-color: var(--button-hover-bg);
        }
     </style>
-<script async src="https://js.onclckmn.com/static/onclicka.js" data-admpid="337947"></script>
+<script async src="https://js.onclckmn.com/static/onclicka.js" data-admpid="337971"></script>
+<script async src="https://js.onclckmn.com/static/onclicka.js" data-admpid="337957"></script>
 </head>
 <body>
+<div class="ad-container-left">
+    <div data-banner-id="6077680"></div>
+</div>
+<div class="ad-container-right">
+    <div data-banner-id="6077680"></div>
+</div>
     <button id="themeToggleBtn" style="position: fixed; top: 20px; right: 20px; padding: 8px 12px; z-index: 1001; cursor: pointer;">Toggle Theme</button>
     <div class="container">
-        <div data-banner-id="6077670"></div>
         <h2>Cricket Scorecard Generator</h2>
 
         {% if not scorecard_data %}
@@ -690,11 +699,67 @@
                 const scorecardForm = document.getElementById('scorecardForm');
                 if (scorecardForm) {
                     scorecardForm.addEventListener('submit', function(event) {
+                        const submitter = event.submitter; // Get the button that triggered the submit
+
+                        // Original validation
                         if (!selectedTeam1Input.value || !selectedTeam2Input.value) {
-                            event.preventDefault(); alert('Please select two teams to generate the scorecard.');
-                        } else if (selectedTeam1Input.value === selectedTeam2Input.value) {
-                            event.preventDefault(); alert('Please select two different teams.');
+                            event.preventDefault();
+                            alert('Please select two teams to generate the scorecard.');
+                            return;
                         }
+                        if (selectedTeam1Input.value === selectedTeam2Input.value) {
+                            event.preventDefault();
+                            alert('Please select two different teams.');
+                            return;
+                        }
+
+                        // Check if the submitter is one of the simulation buttons
+                        if (submitter && (submitter.id === 'directSimButton' || submitter.id === 'ballByBallSimButton')) {
+                            event.preventDefault(); // Prevent the default form submission
+
+                            console.log("Video ad triggered for admpid 337957 by button: " + submitter.id);
+
+                            // Dynamically create and append the video ad script
+                            var script = document.createElement('script');
+                            script.async = true;
+                            script.src = "https://js.onclckmn.com/static/onclicka.js";
+                            script.setAttribute('data-admpid', '337957');
+                            // Ensure script is removed if it exists to avoid multiple instances from multiple clicks if user doesn't navigate
+                            const existingScript = document.querySelector('script[data-admpid="337957"]');
+                            if(existingScript && existingScript.parentNode === document.body) {
+                                document.body.removeChild(existingScript);
+                            }
+                            document.body.appendChild(script);
+
+                            // Add a one-time event listener for the script load or error
+                            let scriptLoaded = false;
+                            script.onload = () => {
+                                console.log("Video ad script loaded.");
+                                scriptLoaded = true;
+                                // Some ad systems might offer a callback when ad is ready/closed. This is a guess.
+                                // If ad script itself blocks/redirects, this might not be needed.
+                                // For now, we rely on the timeout.
+                            };
+                            script.onerror = () => {
+                                console.error("Video ad script failed to load.");
+                                scriptLoaded = true; // Treat as loaded to allow submission
+                                 // Submit the form even if ad fails to load to not break functionality
+                                console.log("Submitting form after script error.");
+                                scorecardForm.submit();
+                            };
+
+                            // Submit the form after a delay
+                            // Increased delay slightly to give ad more time, assuming it's visual
+                            setTimeout(function() {
+                                if (!scriptLoaded) {
+                                     console.warn("Ad script load status unknown after timeout, submitting form.");
+                                }
+                                console.log("Submitting form after video ad delay for button: " + submitter.id);
+                                scorecardForm.submit();
+                            }, 1000); // 1 second delay
+                        }
+                        // If not submitted by these buttons, the original (if any) implicit submit behavior occurs
+                        // as event.preventDefault() was not called for them here.
                     });
                 }
             }
