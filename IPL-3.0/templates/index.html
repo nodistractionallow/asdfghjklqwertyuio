@@ -429,6 +429,8 @@
 <script async src="https://js.onclckmn.com/static/onclicka.js" data-admpid="337971"></script>
 <script async src="https://js.onclckmn.com/static/onclicka.js" data-admpid="337957"></script>
 <script async src="https://js.onclckmn.com/static/onclicka.js" data-admpid="338043"></script>
+<script async src="https://js.onclckmn.com/static/onclicka.js" data-admpid="338049"></script>
+<script async src="https://js.onclckmn.com/static/onclicka.js" data-admpid="338051"></script>
 </head>
 <body>
 <div class="ad-container-left">
@@ -444,6 +446,7 @@
         {% if not scorecard_data %}
             <div class="team-selection">
                 <h3>Select Teams (Click to Select)</h3>
+<div data-banner-id="6077709" style="margin: 10px 0; text-align: center;"></div>
                 <form id="scorecardForm" action="{{ url_for('generate_scorecard') }}" method="post">
                     <input type="hidden" name="selectedTeam1" id="selectedTeam1">
                     <input type="hidden" name="selectedTeam2" id="selectedTeam2">
@@ -462,7 +465,7 @@
                         </div>
                         {% endfor %}
                     </div>
-
+<div data-banner-id="6077709" style="margin: 10px 0; text-align: center;"></div>
                     <div class="simulation-options" style="text-align: center; margin-top: 20px; display: none;">
                         <button type="submit" name="simulation_type" value="direct" id="directSimButton" class="sim-button">Direct Scorecard</button>
                         <button type="submit" name="simulation_type" value="ball_by_ball" id="ballByBallSimButton" class="sim-button">Ball-by-Ball Simulation</button>
@@ -486,12 +489,14 @@
         {% if scorecard_data %}
         <div class="scorecard-section">
             <h3>{{ scorecard_data.match_teams_title }}</h3>
+<div data-banner-id="6077709" style="margin: 10px 0; text-align: center;"></div>
             {% if scorecard_data.tossMsg %}
             <div class="match-summary toss-summary"><h4>Toss</h4><p>{{ scorecard_data.tossMsg }}</p></div> <!-- toss-summary class added to allow specific styling if needed -->
             {% endif %}
             {% if scorecard_data.innings1BatTeam %}
             <h4>Innings 1: {{ scorecard_data.innings1BatTeam.upper() }}</h4>
             <table><thead><tr><th>Player</th><th>Runs</th><th>Balls</th><th>SR</th><th>How Out</th></tr></thead><tbody>{% for player, stats in scorecard_data.innings1Battracker.items() %}<tr><td>{{ player }}</td><td>{{ stats.runs }}</td><td>{{ stats.balls }}</td><td>{{ '%.2f'|format((stats.runs / stats.balls * 100) if stats.balls > 0 else 0) }}</td><td>{{ stats.how_out }}</td></tr>{% endfor %}</tbody></table>
+<div data-banner-id="6077709" style="margin: 10px 0; text-align: center;"></div>
             <p><strong>Total: {{ scorecard_data.innings1Runs }}/{{ scorecard_data.innings1Wickets }} ({{ (scorecard_data.innings1Balls // 6) if scorecard_data.innings1Balls else 0 }}.{{ scorecard_data.innings1Balls % 6 if scorecard_data.innings1Balls else 0 }} Overs)</strong></p>
             <h5>Bowling: {{ scorecard_data.innings2BatTeam.upper() }}</h5>
             <table><thead><tr><th>Player</th><th>Overs</th><th>Runs</th><th>Wickets</th><th>Economy</th></tr></thead><tbody>{% for player, stats in scorecard_data.innings1Bowltracker.items() %}<tr><td>{{ player }}</td><td>{{ (stats.balls // 6) if stats.balls else 0 }}.{{ stats.balls % 6 if stats.balls else 0 }}</td><td>{{ stats.runs }}</td><td>{{ stats.wickets }}</td><td>{{ '%.2f'|format((stats.runs / (stats.balls / 6)) if stats.balls > 0 else 0) }}</td></tr>{% endfor %}</tbody></table>
@@ -503,6 +508,7 @@
             {% if scorecard_data.innings2BatTeam %}
             <h4>Innings 2: {{ scorecard_data.innings2BatTeam.upper() }}</h4>
             <table><thead><tr><th>Player</th><th>Runs</th><th>Balls</th><th>SR</th><th>How Out</th></tr></thead><tbody>{% for player, stats in scorecard_data.innings2Battracker.items() %}<tr><td>{{ player }}</td><td>{{ stats.runs }}</td><td>{{ stats.balls }}</td><td>{{ '%.2f'|format((stats.runs / stats.balls * 100) if stats.balls > 0 else 0) }}</td><td>{{ stats.how_out }}</td></tr>{% endfor %}</tbody></table>
+<div data-banner-id="6077709" style="margin: 10px 0; text-align: center;"></div>
             <p><strong>Total: {{ scorecard_data.innings2Runs }}/{{ scorecard_data.innings2Wickets }} ({{ (scorecard_data.innings2Balls // 6) if scorecard_data.innings2Balls else 0 }}.{{ scorecard_data.innings2Balls % 6 if scorecard_data.innings2Balls else 0 }} Overs)</strong></p>
             <h5>Bowling: {{ scorecard_data.innings1BatTeam.upper() }}</h5>
             <table><thead><tr><th>Player</th><th>Overs</th><th>Runs</th><th>Wickets</th><th>Economy</th></tr></thead><tbody>{% for player, stats in scorecard_data.innings2Bowltracker.items() %}<tr><td>{{ player }}</td><td>{{ (stats.balls // 6) if stats.balls else 0 }}.{{ stats.balls % 6 if stats.balls else 0 }}</td><td>{{ stats.runs }}</td><td>{{ stats.wickets }}</td><td>{{ '%.2f'|format((stats.runs / (stats.balls / 6)) if stats.balls > 0 else 0) }}</td></tr>{% endfor %}</tbody></table>
